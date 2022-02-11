@@ -1,16 +1,20 @@
 const redux = require("redux");
 const createStore = redux.createStore;
 
-const incrementAction = { type: "INCREMENT" };
-const decrementAction = { type: "DECREMENT" };
+const incrementAction = (value) => {
+  return { type: "INCREMENT", payload: value || 1 };
+};
 
-function counterReducer(state = 0, action) {
+const decrementAction = (value) => {
+  return { type: "DECREMENT", payload: value || 1 };
+};
+
+function counterReducer(state = 6, action) {
   switch (action.type) {
     case "INCREMENT":
-      return state + 1;
-
+      return state + action.payload;
     case "DECREMENT":
-      return state - 1;
+      return state - action.payload;
 
     default:
       return state;
@@ -18,9 +22,11 @@ function counterReducer(state = 0, action) {
 }
 
 const store = createStore(counterReducer);
+console.log(store.getState());
 
 store.subscribe(() => {
   console.log(store.getState());
 });
-
-store.dispatch(incrementAction);
+store.dispatch(incrementAction());
+store.dispatch(incrementAction(1));
+store.dispatch(incrementAction(5));
